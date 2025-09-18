@@ -19,6 +19,9 @@ import time
 # Add src directory to Python path
 sys.path.append(os.path.join(os.path.dirname(__file__), 'src'))
 
+# Import Serena integration
+from serena_integration import SerenaIntegration
+
 from src.scraper import DataCollector
 from src.analyzer import DataProcessor
 from src.claude_client import ClaudeAnalyst
@@ -79,6 +82,9 @@ class StreamlitDashboard:
         self.data_processor = None
         self.claude_analyst = None
         self.reporter = None
+
+        # Initialize Serena integration
+        self.serena = SerenaIntegration()
 
         # Initialize session state
         if 'last_update' not in st.session_state:
@@ -179,6 +185,17 @@ class StreamlitDashboard:
         if st.sidebar.button("System Health Check"):
             health = health_check()
             st.sidebar.json(health)
+
+        # Serena integration
+        st.sidebar.subheader("👀 Live Preview")
+
+        st.sidebar.markdown("**Serena Integration:**")
+        st.sidebar.markdown(f"📄 [Project Docs](http://localhost:3000/docs/README.md)")
+        st.sidebar.markdown(f"🔥 [Live Analysis](http://localhost:3000/live_preview/current_analysis.md)")
+
+        if st.sidebar.button("📝 Update Documentation"):
+            self.serena.create_project_documentation()
+            st.sidebar.success("Documentation updated!")
 
         return hours_back
 
@@ -560,7 +577,7 @@ class StreamlitDashboard:
             status_text.empty()
 
     def load_latest_processed_data(self):
-        """Load latest processed data"""
+        """Load latest processed data and update live preview"""
         try:
             processed_files = glob.glob('data/processed/analysis_*.json')
             if not processed_files:
@@ -568,10 +585,315 @@ class StreamlitDashboard:
 
             latest_file = max(processed_files, key=os.path.getctime)
             with open(latest_file, 'r', encoding='utf-8') as f:
-                return json.load(f)
+                data = json.load(f)
+
+            # Update live preview for Serena
+            try:
+                self.serena.create_live_analysis_file(data)
+            except Exception as serena_error:
+                # Don't fail if Serena update fails
+                pass
+
+            return data
         except Exception as e:
             st.error(f"Błąd ładowania danych: {e}")
             return None
+
+    def load_categorized_tweets(self):
+        """Load categorized tweets data"""
+        try:
+            sample_file = 'data/raw/sample_categorized_tweets.json'
+            if os.path.exists(sample_file):
+                with open(sample_file, 'r', encoding='utf-8') as f:
+                    return json.load(f)
+            return None
+        except Exception as e:
+            st.error(f"Błąd ładowania kategoryzowanych tweetów: {e}")
+            return None
+
+    def render_categorized_tweets(self):
+        """Render categorized tweets display"""
+        st.subheader("📱 Najnowsze Tweety według Kategorii")
+
+        tweets_data = self.load_categorized_tweets()
+
+        if not tweets_data:
+            st.warning("Brak kategoryzowanych tweetów. Uruchom pobieranie danych.")
+
+            # Button to fetch new tweets
+            col1, col2 = st.columns(2)
+            with col1:
+                if st.button("🔄 Pobierz przykładowe tweety", key="sample_tweets"):
+                    with st.spinner("Pobieranie tweetów..."):
+                        try:
+                            import subprocess
+                            result = subprocess.run(
+                                ['python', 'quick_sample_tweets.py'],
+                                cwd=os.getcwd(),
+                                capture_output=True,
+                                text=True,
+                                timeout=180
+                            )
+                            if result.returncode == 0:
+                                st.success("✅ Pobrano nowe tweety!")
+                                st.rerun()
+                            else:
+                                st.error(f"❌ Błąd: {result.stderr}")
+                        except Exception as e:
+                            st.error(f"❌ Błąd podczas pobierania: {e}")
+
+            with col2:
+                if st.button("📊 Pobierz wszystkie konta", key="all_tweets"):
+                    st.info("Pobieranie wszystkich kont może potrwać kilka minut...")
+            return
+
+        # Display summary stats
+        total_tweets = sum(len(tweets) for tweets in tweets_data.values())
+        categories_count = len([cat for cat, tweets in tweets_data.items() if tweets])
+
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.metric("Kategorie aktywne", categories_count)
+        with col2:
+            st.metric("Łącznie tweetów", total_tweets)
+        with col3:
+            if total_tweets > 0:
+                avg_per_category = total_tweets / categories_count if categories_count > 0 else 0
+                st.metric("Średnio na kategorię", f"{avg_per_category:.1f}")
+
+        # Create tabs for each category
+        active_categories = [(cat, tweets) for cat, tweets in tweets_data.items() if tweets]
+
+        if not active_categories:
+            st.warning("Brak aktywnych kategorii")
+            return
+
+        # Create category tabs
+        tab_names = [f"{cat} ({len(tweets)})" for cat, tweets in active_categories]
+        tabs = st.tabs(tab_names)
+
+        for i, (category, tweets) in enumerate(active_categories):
+            with tabs[i]:
+                st.write(f"**{category}** - {len(tweets)} najnowszych tweetów")
+
+                # Category metrics
+                if tweets:
+                    total_likes = sum(tweet.get('like_count', 0) for tweet in tweets)
+                    total_retweets = sum(tweet.get('retweet_count', 0) for tweet in tweets)
+
+                    col1, col2, col3 = st.columns(3)
+                    with col1:
+                        st.metric("Łącznie polubień", f"{total_likes:,}")
+                    with col2:
+                        st.metric("Łącznie retweetów", f"{total_retweets:,}")
+                    with col3:
+                        avg_engagement = (total_likes + total_retweets) / len(tweets) if tweets else 0
+                        st.metric("Śr. zaangażowanie", f"{avg_engagement:.1f}")
+
+                # Display tweets
+                for j, tweet in enumerate(tweets, 1):
+                    username = tweet.get('username', 'unknown')
+                    user_name = tweet.get('user_name', username)
+                    text = tweet.get('text', 'Brak tekstu')
+                    created_at = tweet.get('created_at', '')
+                    likes = tweet.get('like_count', 0)
+                    retweets = tweet.get('retweet_count', 0)
+                    replies = tweet.get('reply_count', 0)
+
+                    # Clean up text for display
+                    if len(text) > 300:
+                        text = text[:300] + "..."
+
+                    # Format date
+                    try:
+                        if created_at:
+                            from datetime import datetime
+                            dt = datetime.fromisoformat(created_at.replace('Z', '+00:00'))
+                            formatted_date = dt.strftime('%d.%m.%Y %H:%M')
+                        else:
+                            formatted_date = "Nieznana data"
+                    except:
+                        formatted_date = created_at
+
+                    # Create tweet card
+                    st.markdown(f"""
+                    <div class="metric-card">
+                        <h4>{j}. @{username} ({user_name})</h4>
+                        <p>{text}</p>
+                        <div style="display: flex; gap: 20px; font-size: 0.8em; color: #666;">
+                            <span>📅 {formatted_date}</span>
+                            <span>❤️ {likes:,}</span>
+                            <span>🔄 {retweets:,}</span>
+                            <span>💬 {replies:,}</span>
+                        </div>
+                    </div>
+                    """, unsafe_allow_html=True)
+
+                # Refresh button for this category
+                if st.button(f"🔄 Odśwież {category}", key=f"refresh_{category}"):
+                    st.info(f"Odświeżanie kategorii {category}...")
+
+        # Global refresh button
+        st.markdown("---")
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("🔄 Odśwież wszystkie tweety", key="refresh_all_tweets"):
+                with st.spinner("Pobieranie najnowszych tweetów..."):
+                    try:
+                        import subprocess
+                        result = subprocess.run(
+                            ['python', 'quick_sample_tweets.py'],
+                            cwd=os.getcwd(),
+                            capture_output=True,
+                            text=True,
+                            timeout=180
+                        )
+                        if result.returncode == 0:
+                            st.success("✅ Odświeżono wszystkie tweety!")
+                            st.rerun()
+                        else:
+                            st.error(f"❌ Błąd: {result.stderr}")
+                    except Exception as e:
+                        st.error(f"❌ Błąd podczas odświeżania: {e}")
+
+        with col2:
+            # Data info
+            if tweets_data:
+                st.caption(f"Ostatnia aktualizacja: {datetime.now().strftime('%d.%m.%Y %H:%M:%S')}")
+
+    def render_market_analysis(self):
+        """Render comprehensive market analysis report"""
+        st.subheader("📊 Analiza Rynkowa i Prognozy")
+
+        # Load analysis data
+        try:
+            analysis_file = 'data/analysis/market_sentiment_analysis.json'
+            if os.path.exists(analysis_file):
+                with open(analysis_file, 'r', encoding='utf-8') as f:
+                    analysis_data = json.load(f)
+            else:
+                analysis_data = None
+
+            report_file = 'data/analysis/market_analysis_report.md'
+            if os.path.exists(report_file):
+                with open(report_file, 'r', encoding='utf-8') as f:
+                    report_content = f.read()
+            else:
+                report_content = None
+
+        except Exception as e:
+            st.error(f"Błąd ładowania analizy: {e}")
+            analysis_data = None
+            report_content = None
+
+        if not analysis_data or not report_content:
+            st.warning("Brak analizy rynkowej. Wygeneruj nową analizę.")
+
+            col1, col2 = st.columns(2)
+            with col1:
+                if st.button("🧠 Wygeneruj analizę rynkową", key="generate_analysis"):
+                    with st.spinner("Generowanie analizy rynkowej..."):
+                        try:
+                            import subprocess
+                            result = subprocess.run(
+                                ['python', 'local_market_analysis.py'],
+                                cwd=os.getcwd(),
+                                capture_output=True,
+                                text=True,
+                                timeout=60
+                            )
+                            if result.returncode == 0:
+                                st.success("✅ Analiza wygenerowana!")
+                                st.rerun()
+                            else:
+                                st.error(f"❌ Błąd: {result.stderr}")
+                        except Exception as e:
+                            st.error(f"❌ Błąd podczas generowania: {e}")
+
+            with col2:
+                st.info("Analiza wymaga najpierw pobrania tweetów z zakładki 'Tweety'")
+            return
+
+        # Display key metrics
+        if analysis_data:
+            st.markdown("### 🎯 Kluczowe Wskaźniki")
+
+            col1, col2, col3, col4 = st.columns(4)
+
+            with col1:
+                sentiment_score = analysis_data.get('overall_sentiment', 0.0)
+                sentiment_rating = analysis_data.get('sentiment_rating', 'Neutralny')
+                st.metric("Sentiment rynkowy", sentiment_rating, delta=f"{sentiment_score:+.3f}")
+
+            with col2:
+                tweets_count = analysis_data.get('tweets_analyzed', 0)
+                st.metric("Przeanalizowane tweety", tweets_count)
+
+            with col3:
+                total_engagement = analysis_data.get('total_engagement', 0)
+                st.metric("Łączne zaangażowanie", f"{total_engagement:,}")
+
+            with col4:
+                categories_count = len(analysis_data.get('categories', []))
+                st.metric("Kategorie", categories_count)
+
+        # Analysis timestamp
+        if analysis_data:
+            timestamp = analysis_data.get('timestamp', '')
+            if timestamp:
+                try:
+                    dt = datetime.fromisoformat(timestamp)
+                    formatted_time = dt.strftime('%d.%m.%Y %H:%M:%S')
+                    st.caption(f"Analiza z: {formatted_time}")
+                except:
+                    st.caption(f"Analiza z: {timestamp}")
+
+        # Display full report
+        if report_content:
+            st.markdown("### 📋 Pełny Raport")
+
+            # Add download button
+            col1, col2 = st.columns([3, 1])
+            with col2:
+                st.download_button(
+                    label="📄 Pobierz raport",
+                    data=report_content,
+                    file_name=f"analiza_rynkowa_{datetime.now().strftime('%Y%m%d_%H%M%S')}.md",
+                    mime="text/markdown",
+                    key="download_analysis"
+                )
+
+            # Display report content
+            with st.expander("📊 Pokaż pełną analizę", expanded=True):
+                st.markdown(report_content)
+
+        # Refresh analysis section
+        st.markdown("---")
+        st.markdown("### 🔄 Aktualizacja Analizy")
+
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("🔄 Odśwież analizę", key="refresh_analysis"):
+                with st.spinner("Regenerowanie analizy..."):
+                    try:
+                        import subprocess
+                        result = subprocess.run(
+                            ['python', 'local_market_analysis.py'],
+                            cwd=os.getcwd(),
+                            capture_output=True,
+                            text=True,
+                            timeout=60
+                        )
+                        if result.returncode == 0:
+                            st.success("✅ Analiza zaktualizowana!")
+                            st.rerun()
+                        else:
+                            st.error(f"❌ Błąd: {result.stderr}")
+                    except Exception as e:
+                        st.error(f"❌ Błąd podczas aktualizacji: {e}")
+
+        with col2:
+            st.info("💡 Tip: Najpierw odśwież tweety, potem analizę dla najaktualniejszych wyników")
 
     def get_latest_processed_file(self):
         """Get path to latest processed file"""
@@ -587,18 +909,24 @@ class StreamlitDashboard:
         hours_back = self.render_sidebar()
 
         # Main content area
-        tab1, tab2, tab3, tab4 = st.tabs(["📊 Dashboard", "📈 Wykresy", "🔍 Szczegóły", "🔥 Aktywność"])
+        tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["📊 Dashboard", "📱 Tweety", "🧠 Analiza", "📈 Wykresy", "🔍 Szczegóły", "🔥 Aktywność"])
 
         with tab1:
             self.render_main_metrics()
 
         with tab2:
-            self.render_sentiment_chart()
+            self.render_categorized_tweets()
 
         with tab3:
-            self.render_category_details()
+            self.render_market_analysis()
 
         with tab4:
+            self.render_sentiment_chart()
+
+        with tab5:
+            self.render_category_details()
+
+        with tab6:
             self.render_recent_activity()
 
         # Footer

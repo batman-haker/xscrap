@@ -1,40 +1,48 @@
 {
+  "polish_finance": [
+    {
+      "username": "MarekLangalis",
+      "name": "Marek Łangalis",
+      "category": "polish_finance",
+      "priority": "high"
+    }
+  ],
   "cryptocurrency": [
     {
       "username": "cz_binance",
       "name": "Binance CEO",
       "category": "crypto",
-      "priority": "high"
+      "priority": "medium"
     },
     {
       "username": "elonmusk",
       "name": "Tesla/X CEO",
       "category": "crypto",
-      "priority": "high"
+      "priority": "medium"
     },
     {
       "username": "VitalikButerin",
       "name": "Ethereum",
       "category": "crypto",
-      "priority": "high"
+      "priority": "medium"
     },
     {
       "username": "michael_saylor",
       "name": "MicroStrategy",
       "category": "crypto",
-      "priority": "high"
+      "priority": "medium"
     },
     {
       "username": "APompliano",
       "name": "Pomp",
       "category": "crypto",
-      "priority": "medium"
+      "priority": "low"
     },
     {
       "username": "DocumentingBTC",
       "name": "Bitcoin News",
       "category": "crypto",
-      "priority": "medium"
+      "priority": "low"
     }
   ],
   "us_economy": [

@@ -1,0 +1,138 @@
+{
+  "timestamp": "2025-09-18T22:35:09.367316",
+  "tweets_analyzed": 12,
+  "categories": [
+    "Giełda",
+    "Kryptowaluty",
+    "Gospodarka",
+    "Polityka",
+    "Nowinki AI",
+    "Filozofia"
+  ],
+  "overall_sentiment": 0.051388888888888894,
+  "sentiment_rating": "Neutralny (5/10)",
+  "total_engagement": 354216,
+  "source_data": {
+    "Giełda": [
+      {
+        "username": "stocktavia",
+        "text": "RT @stocktavia: Co zaprząta dzisiaj moją głowę? Historia wojny peloponeskiej.\n\nCzłowiek podchodzi do giełdy z całym bagażem indywidualnych…",
+        "created_at": "Thu Sep 18 19:03:40 +0000 2025",
+        "like_count": 38,
+        "retweet_count": 0,
+        "reply_count": 3,
+        "user_name": "stocktavia"
+      },
+      {
+        "username": "PelosiTracker_",
+        "text": "Everyone please give Tim Moore a congrats on crushing it with Intel\n\nHe bought $INTC two separate times recently\n\n- $50K on 7/31/25\n- $50K on 8/7/25\n\nSince his first buy the stock is up 58%\n\nHe also h",
+        "created_at": "Thu Sep 18 19:24:24 +0000 2025",
+        "like_count": 939,
+        "retweet_count": 82,
+        "reply_count": 64,
+        "user_name": "PelosiTracker_"
+      },
+      {
+        "username": "wallstengine",
+        "text": "Real estate creators on Whop are seeing a surge in sales — $4.4M over the last 90 days, up 65% this week alone 👀\n\nThe pickup comes as mortgage refinance demand jumps nearly 60% with rates sliding to t",
+        "created_at": "Thu Sep 18 19:15:55 +0000 2025",
+        "like_count": 22,
+        "retweet_count": 2,
+        "reply_count": 8,
+        "user_name": "wallstengine"
+      }
+    ],
+    "Kryptowaluty": [
+      {
+        "username": "KO_Kryptowaluty",
+        "text": "1. Dzisiaj spotkanie Fedu i decyzje w sprawie stóp procentowych.\nOd tego dość dużo zależy, zapytasz co?\n\nNo po za tańszym pieniądzem, fundusze rynku pieniężnego, obecnie ładujące w papiery skarbowe - ",
+        "created_at": "Wed Sep 17 06:17:40 +0000 2025",
+        "like_count": 291,
+        "retweet_count": 14,
+        "reply_count": 39,
+        "user_name": "KO_Kryptowaluty"
+      },
+      {
+        "username": "Dystopia_PL",
+        "text": "Fed tnie stopy o .25, a na BTC klasyk czyli MAUL.\nJak myślcie czy ostatnie działania trumpa miały wpływ na taką, a nie inną decyzje banku centralnego? https://t.co/OZ80EEfPoL",
+        "created_at": "Wed Sep 17 18:30:50 +0000 2025",
+        "like_count": 44,
+        "retweet_count": 3,
+        "reply_count": 7,
+        "user_name": "Dystopia_PL"
+      }
+    ],
+    "Gospodarka": [
+      {
+        "username": "wstepien_",
+        "text": "Ciężko wyobrazić sobie większą patologię niż ta cała 'gun culture'",
+        "created_at": "Sat Sep 13 07:52:58 +0000 2025",
+        "like_count": 14,
+        "retweet_count": 0,
+        "reply_count": 0,
+        "user_name": "wstepien_"
+      },
+      {
+        "username": "KamSobolewski",
+        "text": "Wydatki rządowe finansowane długiem dodadzą do wzrostu PKB AD 2025 aż 0.5 p.p. wiecej niż średnia oczekiwań.\nW 2026 deficyt dalej 6.5% PKB a dług ponad 66% PKB, po korekcie o cześć pozyczkową KPO pona",
+        "created_at": "Thu Aug 28 14:44:04 +0000 2025",
+        "like_count": 6,
+        "retweet_count": 0,
+        "reply_count": 2,
+        "user_name": "KamSobolewski"
+      }
+    ],
+    "Polityka": [
+      {
+        "username": "realDonaldTrump",
+        "text": "https://t.co/gZgTprtUvt",
+        "created_at": "Wed Sep 17 02:08:27 +0000 2025",
+        "like_count": 305665,
+        "retweet_count": 43978,
+        "reply_count": 20256,
+        "user_name": "realDonaldTrump"
+      }
+    ],
+    "Nowinki AI": [
+      {
+        "username": "popai_pl",
+        "text": "RT @popai_pl: Z cyklu: ciekawe projekty w AI - dziś o Dex.\n\nDex to to nie jest kolejny program do nauki języków, a fizyczne urządzenie, któ…",
+        "created_at": "Thu Sep 18 15:40:43 +0000 2025",
+        "like_count": 9,
+        "retweet_count": 2,
+        "reply_count": 1,
+        "user_name": "popai_pl"
+      },
+      {
+        "username": "huggingface",
+        "text": "RT @DecartAI: We are building “Open Source Nano Banana for Video” - here is open source demo v0.1\n\nWe are open sourcing Lucy Edit, the firs…",
+        "created_at": "Thu Sep 18 20:18:54 +0000 2025",
+        "like_count": 32,
+        "retweet_count": 11,
+        "reply_count": 2,
+        "user_name": "huggingface"
+      }
+    ],
+    "Filozofia": [
+      {
+        "username": "naval",
+        "text": "RT @NavalismHQ: \"Individuals rarely admit mistakes. Groups never do.\"\n\n@naval",
+        "created_at": "Tue Sep 16 07:22:49 +0000 2025",
+        "like_count": 2496,
+        "retweet_count": 242,
+        "reply_count": 99,
+        "user_name": "naval"
+      },
+      {
+        "username": "andrzejdragan",
+        "text": "Jako że Apple nie potrafi stworzyć własnej AI, postanowiło zamiast tego stworzyć cykl prac o tym, że AI w ogóle nie istnieje, z entuzjastycznie przyjętym przez sceptyków „Illusion of thinking”. Zaraz ",
+        "created_at": "Thu Sep 18 10:21:12 +0000 2025",
+        "like_count": 312,
+        "retweet_count": 14,
+        "reply_count": 37,
+        "user_name": "andrzejdragan"
+      }
+    ]
+  },
+  "analysis_report": "# ANALIZA RYNKU FINANSOWEGO\n*Wygenerowano: 18.09.2025 22:35:09*\n\n**Przeanalizowano 12 tweetów z 6 kategorii**\n\n---\n\n## 📊 EXECUTIVE SUMMARY\n\n\n**Ogólny sentiment rynkowy:** Neutralny (5/10)\n**Średni wskaźnik sentymenty:** 0.051\n**Łączne zaangażowanie:** 354,216 interakcji\n\n### Kluczowe obserwacje:\n- Aktywność na rynkach wysoka, szczególnie w segmencie giełdowym\n- Zauważalne zainteresowanie decyzjami Fed dotyczącymi stóp procentowych\n- Rosnące znaczenie AI i technologii w dyskusjach rynkowych\n- Stabilny optimism w segmencie nieruchomości\n\n\n## 🔍 ANALIZA KATEGORIALNA\n\n### Giełda\n\n**Sentiment:** Pozytywny (+0.106)\n**Zaangażowanie:** Średni (1,083 łącznych interakcji)\n**Liczba tweetów:** 3\n\n**Kluczowe tematy:**\n- Najważniejszy tweet: @PelosiTracker_ (939❤️ 82🔄)\n- Wykryte sygnały: stocks (1), bullish (2)\n\n### Kryptowaluty\n\n**Sentiment:** Neutralny (+0.000)\n**Zaangażowanie:** Średni (352 łącznych interakcji)\n**Liczba tweetów:** 2\n\n**Kluczowe tematy:**\n- Najważniejszy tweet: @KO_Kryptowaluty (291❤️ 14🔄)\n- Wykryte sygnały: institutions (2), crypto (1)\n\n### Gospodarka\n\n**Sentiment:** Neutralny (+0.000)\n**Zaangażowanie:** Niski (20 łącznych interakcji)\n**Liczba tweetów:** 2\n\n**Kluczowe tematy:**\n- Najważniejszy tweet: @wstepien_ (14❤️ 0🔄)\n- Wykryte sygnały: bullish (1), bearish (1)\n\n### Polityka\n\n**Sentiment:** Neutralny (+0.000)\n**Zaangażowanie:** Wysoki (349,643 łącznych interakcji)\n**Liczba tweetów:** 1\n\n**Kluczowe tematy:**\n- Najważniejszy tweet: @realDonaldTrump (305665❤️ 43978🔄)\n\n### Nowinki AI\n\n**Sentiment:** Neutralny (+0.000)\n**Zaangażowanie:** Niski (54 łącznych interakcji)\n**Liczba tweetów:** 2\n\n**Kluczowe tematy:**\n- Najważniejszy tweet: @huggingface (32❤️ 11🔄)\n\n### Filozofia\n\n**Sentiment:** Pozytywny (+0.150)\n**Zaangażowanie:** Wysoki (3,064 łącznych interakcji)\n**Liczba tweetów:** 2\n\n**Kluczowe tematy:**\n- Najważniejszy tweet: @naval (2496❤️ 242🔄)\n- Wykryte sygnały: bullish (1)\n\n\n## 📈 PROGNOZY KRÓTKOTERMINOWE (1-4 tygodnie)\n\n### Prawdopodobne scenariusze:\n1. **Stabilizacja po decyzjach Fed** - Rynki prawdopodobnie będą reagować na najnowsze decyzje dotyczące stóp procentowych\n2. **Wzrost zainteresowania technologiami** - Szczególnie AI i blockchain nadal przyciągają uwagę inwestorów\n3. **Ożywienie w sektorze nieruchomości** - Spadające stopy mogą stymulować refinansowanie i nowe inwestycje\n\n### Kluczowe wydarzenia do obserwacji:\n- Kolejne komunikaty Fed i dane makroekonomiczne\n- Rozwój sytuacji na rynku kryptowalut\n- Earnings season i wyniki spółek technologicznych\n\n## 💡 REKOMENDACJE INWESTYCYJNE\n\n### Sektory do rozważenia:\n- **Technologie (AI/Blockchain)** - Rosnące zainteresowanie i innowacje\n- **Nieruchomości** - Potencjał z tytułu spadających stóp\n- **Tradycyjne blue chips** - Stabilność w niepewnych czasach\n\n### Strategia zarządzania ryzykiem:\n- Dywersyfikacja między sektorami\n- Monitoring komunikacji banków centralnych\n- Zachowanie płynności na możliwe korekty\n\n### Uwagi specjalne:\n- Wysokie zaangażowanie w mediach społecznościowych może sygnalizować podwyższoną zmienność\n- Tematy związane z polityką (Trump, wybory) mogą wpływać na nastoje rynkowe\n- Kryptowaluty pozostają wysoko skorelowane z decyzjami Fed\n\n## 🔮 MONITORING I WSKAŹNIKI\n\n### Do obserwacji:\n- Volume i aktywność na głównych giełdach\n- Spread między stopami długo- i krótkoterminowymi\n- Sentiment w mediach społecznościowych (kontynuacja monitoringu)\n- Przepływy kapitału do/z funduszy ETF\n\n---\n\n**Zastrzeżenie:** Analiza oparta na ograniczonej próbie tweetów z okresu 16-18.09.2025.\nNie stanowi porady inwestycyjnej. Zawsze przeprowadź własną analizę przed podjęciem decyzji inwestycyjnych.\n"
+}
