@@ -1,0 +1,42 @@
+{
+  "cryptocurrency": [
+    "bitcoin", "btc", "ethereum", "eth", "crypto", "cryptocurrency",
+    "blockchain", "defi", "nft", "altcoin", "hodl", "mining",
+    "binance", "coinbase", "web3", "metaverse", "doge", "ada",
+    "sol", "matic", "link", "dot", "avax", "luna", "usdt", "usdc"
+  ],
+  "us_economy": [
+    "fed", "federal reserve", "interest rates", "inflation", "cpi",
+    "unemployment", "gdp", "recession", "bear market", "bull market",
+    "s&p 500", "nasdaq", "dow jones", "treasury", "bond", "yield",
+    "dollar", "usd", "powell", "fomc", "tapering", "quantitative easing"
+  ],
+  "polish_economy": [
+    "nbp", "stopy procentowe", "inflacja", "pln", "zloty", "złoty",
+    "wig", "wig20", "gpw", "warszawa", "poland", "polska", "pkb",
+    "bezrobocie", "gus", "ministerstwo finansów", "orlen", "pko",
+    "kghm", "cd projekt", "allegro", "mbank"
+  ],
+  "geopolitics": [
+    "war", "ukraine", "russia", "china", "sanctions", "nato",
+    "eu", "european union", "trade war", "tariffs", "brexit",
+    "middle east", "israel", "iran", "oil", "energy", "pipeline",
+    "xi jinping", "putin", "biden", "trump", "election"
+  ],
+  "gold_commodities": [
+    "gold", "silver", "platinum", "palladium", "oil", "crude",
+    "wti", "brent", "copper", "aluminum", "wheat", "corn",
+    "natural gas", "uranium", "lithium", "rare earth", "commodities",
+    "futures", "etf", "gld", "slv", "uso"
+  ],
+  "sentiment_positive": [
+    "bullish", "buy", "long", "pump", "moon", "rocket", "gains",
+    "profit", "green", "up", "rise", "surge", "rally", "boom",
+    "opportunity", "optimistic", "positive", "strong", "growth"
+  ],
+  "sentiment_negative": [
+    "bearish", "sell", "short", "dump", "crash", "drop", "loss",
+    "red", "down", "fall", "decline", "correction", "recession",
+    "fear", "panic", "pessimistic", "negative", "weak", "risk"
+  ]
+}

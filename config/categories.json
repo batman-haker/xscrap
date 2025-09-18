@@ -1,0 +1,73 @@
+{
+  "categories": {
+    "cryptocurrency": {
+      "name": "Cryptocurrency",
+      "description": "Digital currencies, blockchain technology, DeFi",
+      "weight": 1.2,
+      "risk_level": "high",
+      "volatility": "very_high"
+    },
+    "us_economy": {
+      "name": "US Economy",
+      "description": "Federal Reserve, inflation, employment, GDP",
+      "weight": 1.5,
+      "risk_level": "medium",
+      "volatility": "medium"
+    },
+    "polish_economy": {
+      "name": "Polish Economy",
+      "description": "NBP, PLN, Warsaw Stock Exchange, local companies",
+      "weight": 1.3,
+      "risk_level": "medium",
+      "volatility": "medium"
+    },
+    "geopolitics": {
+      "name": "Geopolitics",
+      "description": "International relations, conflicts, sanctions",
+      "weight": 1.4,
+      "risk_level": "high",
+      "volatility": "high"
+    },
+    "gold_commodities": {
+      "name": "Gold & Commodities",
+      "description": "Precious metals, oil, agricultural products",
+      "weight": 1.1,
+      "risk_level": "medium",
+      "volatility": "medium"
+    }
+  },
+  "sentiment_thresholds": {
+    "very_positive": 0.8,
+    "positive": 0.4,
+    "neutral": 0.0,
+    "negative": -0.4,
+    "very_negative": -0.8
+  },
+  "recommendation_rules": {
+    "strong_buy": {
+      "min_sentiment": 0.7,
+      "min_confidence": 0.8,
+      "required_categories": 2
+    },
+    "buy": {
+      "min_sentiment": 0.4,
+      "min_confidence": 0.6,
+      "required_categories": 1
+    },
+    "hold": {
+      "min_sentiment": -0.2,
+      "max_sentiment": 0.4,
+      "min_confidence": 0.5
+    },
+    "sell": {
+      "max_sentiment": -0.4,
+      "min_confidence": 0.6,
+      "required_categories": 1
+    },
+    "strong_sell": {
+      "max_sentiment": -0.7,
+      "min_confidence": 0.8,
+      "required_categories": 2
+    }
+  }
+}

@@ -1,0 +1,168 @@
+{
+  "cryptocurrency": [
+    {
+      "username": "cz_binance",
+      "name": "Binance CEO",
+      "category": "crypto",
+      "priority": "high"
+    },
+    {
+      "username": "elonmusk",
+      "name": "Tesla/X CEO",
+      "category": "crypto",
+      "priority": "high"
+    },
+    {
+      "username": "VitalikButerin",
+      "name": "Ethereum",
+      "category": "crypto",
+      "priority": "high"
+    },
+    {
+      "username": "michael_saylor",
+      "name": "MicroStrategy",
+      "category": "crypto",
+      "priority": "high"
+    },
+    {
+      "username": "APompliano",
+      "name": "Pomp",
+      "category": "crypto",
+      "priority": "medium"
+    },
+    {
+      "username": "DocumentingBTC",
+      "name": "Bitcoin News",
+      "category": "crypto",
+      "priority": "medium"
+    }
+  ],
+  "us_economy": [
+    {
+      "username": "federalreserve",
+      "name": "Fed",
+      "category": "us_economy",
+      "priority": "high"
+    },
+    {
+      "username": "nytimes",
+      "name": "Economic News",
+      "category": "us_economy",
+      "priority": "high"
+    },
+    {
+      "username": "WSJ",
+      "name": "Wall Street Journal",
+      "category": "us_economy",
+      "priority": "high"
+    },
+    {
+      "username": "business",
+      "name": "Bloomberg",
+      "category": "us_economy",
+      "priority": "high"
+    },
+    {
+      "username": "markets",
+      "name": "Bloomberg Markets",
+      "category": "us_economy",
+      "priority": "high"
+    },
+    {
+      "username": "cnbc",
+      "name": "CNBC",
+      "category": "us_economy",
+      "priority": "medium"
+    }
+  ],
+  "polish_economy": [
+    {
+      "username": "NBPgovpl",
+      "name": "NBP",
+      "category": "polish_economy",
+      "priority": "high"
+    },
+    {
+      "username": "FinancePoland",
+      "name": "Ministry of Finance",
+      "category": "polish_economy",
+      "priority": "high"
+    },
+    {
+      "username": "GPW_pl",
+      "name": "Warsaw Stock Exchange",
+      "category": "polish_economy",
+      "priority": "high"
+    },
+    {
+      "username": "parkietcom",
+      "name": "Parkiet",
+      "category": "polish_economy",
+      "priority": "medium"
+    },
+    {
+      "username": "PulseBiznesu",
+      "name": "Pulse Biznesu",
+      "category": "polish_economy",
+      "priority": "medium"
+    }
+  ],
+  "geopolitics": [
+    {
+      "username": "Reuters",
+      "name": "Reuters",
+      "category": "geopolitics",
+      "priority": "high"
+    },
+    {
+      "username": "BBCBreaking",
+      "name": "BBC",
+      "category": "geopolitics",
+      "priority": "high"
+    },
+    {
+      "username": "ForeignAffairs",
+      "name": "Foreign Affairs",
+      "category": "geopolitics",
+      "priority": "medium"
+    },
+    {
+      "username": "CFR_org",
+      "name": "Council on Foreign Relations",
+      "category": "geopolitics",
+      "priority": "medium"
+    },
+    {
+      "username": "EmmanuelMacron",
+      "name": "French President",
+      "category": "geopolitics",
+      "priority": "medium"
+    }
+  ],
+  "gold_commodities": [
+    {
+      "username": "GoldTelegraph",
+      "name": "Gold News",
+      "category": "gold_commodities",
+      "priority": "medium"
+    },
+    {
+      "username": "Schuldensuehner",
+      "name": "Gold Analysis",
+      "category": "gold_commodities",
+      "priority": "medium"
+    },
+    {
+      "username": "PeterSchiff",
+      "name": "Gold Bull",
+      "category": "gold_commodities",
+      "priority": "medium"
+    },
+    {
+      "username": "SprrottGold",
+      "name": "Sprott Gold",
+      "category": "gold_commodities",
+      "priority": "medium"
+    }
+  ]
+}
