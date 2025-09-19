@@ -74,12 +74,20 @@ def load_comprehensive_data():
         return None
 
 def load_custom_analysis(filename):
-    """Load custom analysis files from C:/Xscrap/"""
+    """Load custom analysis files from project directory"""
     try:
-        file_path = f'C:/Xscrap/{filename}'
+        # Try local project directory first (for Streamlit Cloud)
+        file_path = filename
         if os.path.exists(file_path):
             with open(file_path, 'r', encoding='utf-8') as f:
                 return f.read()
+
+        # Fallback to C:/Xscrap/ for local development
+        fallback_path = f'C:/Xscrap/{filename}'
+        if os.path.exists(fallback_path):
+            with open(fallback_path, 'r', encoding='utf-8') as f:
+                return f.read()
+
         return None
     except Exception as e:
         st.error(f"Błąd ładowania {filename}: {e}")

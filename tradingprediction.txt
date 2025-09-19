@@ -1,0 +1,140 @@
+Trading Playbook – Q4 2025
+1. Półprzewodniki / AI Supply Chain
+
+Teza: NVDA×INTC deal katalizatorem dla łańcucha AI-PC i akceleratorów.
+
+Tickery: NVDA, INTC, MU (HBM), SMCI (serwery/chłodzenie), ACLS/AEHR (test equipment).
+
+Katalizatory:
+
+Kolejne szczegóły współpracy NVDA–INTC (daty premier CPU+GPU SoC).
+
+Raporty kwartalne Micron i HBM supply.
+
+Dane o CAPEX w serwerach (Dell, HPQ, hyperscalerzy).
+
+Poziomy ryzyka:
+
+NVDA: ryzyko „sell-the-news” przy kolejnych rekordach.
+
+INTC: taktyczna long/beta, stop jeśli powrót < 21 USD.
+
+2. Defense-Tech / AI-Enabled Defense
+
+Teza: kontrakty PLTR w UK i rosnące budżety obronne w NATO.
+
+Tickery: PLTR, LMT, NOC, europejskie primes (BAES, Leonardo).
+
+Katalizatory:
+
+Kolejne ogłoszenia kontraktów (UK, US DoD, EU).
+
+Raporty budżetowe NATO 2026.
+
+Wybory w USA – program obronny jako „bipartisan driver”.
+
+Poziomy ryzyka:
+
+PLTR: korekta możliwa przy wycenie >20× sales; preferować na „kontrakt news”.
+
+3. Makro / Fed / Duration
+
+Teza: rynek gra kolejne 25 pb cięcia w październiku; duration trade wciąż działa.
+
+Tickery: TLT, ZB futures, IG credit ETF (LQD).
+
+Katalizatory:
+
+Decyzja Fed październik/listopad (Polymarket ~86% szansy).
+
+Dane payrolls i CPI (short-term vola).
+
+Poziomy ryzyka:
+
+Duration OW dopóki Fed nie sygnalizuje pauzy; hedge via puts.
+
+4. Polska (GPW)
+
+Teza: tanie wyceny, ale duża premia za ryzyko regulacyjne.
+
+Tickery: PKO, PZU, Budimex, Dino, mid/small FCF-yielders.
+
+Katalizatory:
+
+Komunikaty rządu dot. podatku bankowego/CIT.
+
+Start nowych przetargów (KPO, infrastruktura).
+
+Wyniki Q3 banków – sygnał dla dywidend 2026.
+
+Poziomy ryzyka:
+
+Banki: wejście long tylko po klarownym komunikacie dot. podatków.
+
+Budowlanka: gra tylko pod przetargi, nie pod „beta sektorową”.
+
+5. Krypto
+
+Teza: beta z BTC/ETH przy cięciach Fed, miners jako dźwignia.
+
+Tickery: BTC, ETH (przez ETF-y spot), miners: IREN, CLSK, MARA.
+
+Katalizatory:
+
+Potwierdzenie kolejnych cięć Fed (słabszy dolar).
+
+Przepływy do ETF-ów BTC/ETH.
+
+Konsolidacja miners (M&A news).
+
+Poziomy ryzyka:
+
+BTC: short-term take profit przy spike >85k.
+
+Miners: selektywne longi, hedge jeśli BTC <60k.
+
+6. Housing / Konsument USA
+
+Teza: spadek stóp hipotecznych → refi boom → wsparcie dla konsumpcji.
+
+Tickery: ITB (homebuilders ETF), LEN, DHI; konsumpcyjne: HD, LOW.
+
+Katalizatory:
+
+Dane MBA o refinansowaniach.
+
+Sprzedaż nowych domów.
+
+Poziomy ryzyka:
+
+Long dopóki mortgage <6%; hedge puts na ITB.
+
+7. Sentiment / Meta-Trade
+
+Teza: FOMO w AI i krypto = sygnał późnej fazy cyklu.
+
+Setup:
+
+Long quality growth (cashflow) vs short high-multiple/no-cash AI lotto names.
+
+Pair trades: NVDA long vs. AI penny stocks short.
+
+Katalizatory: social buzz, retail inflows.
+
+Poziomy ryzyka: cięcie ekspozycji przy VIX <12 (nadmierny optymizm).
+
+✅ Trading Checklist
+
+Fed cuts → long duration, quality equities.
+
+NVDA×INTC → overweight AI supply chain, watch HBM bottleneck.
+
+Defense contracts → PLTR & primes long on headlines.
+
+Polska → tylko selektywne longi po klarownym komunikacie podatkowym.
+
+Krypto → BTC/ETH long beta, miners tylko selektywnie.
+
+Housing USA → long builders dopóki mortgage spada.
+
+Sentiment → hedge przez pary (long quality vs short froth).
