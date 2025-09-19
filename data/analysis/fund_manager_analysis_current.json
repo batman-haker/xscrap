@@ -1,0 +1,36 @@
+{
+  "timestamp": "2025-09-19T08:44:31.482684",
+  "data_summary": {
+    "total_accounts": 33,
+    "total_tweets": 654,
+    "new_api_calls": 0,
+    "categories": 6,
+    "tweets_per_category": {
+      "Giełda": 318,
+      "Kryptowaluty": 100,
+      "Gospodarka": 59,
+      "Polityka": 40,
+      "Nowinki AI": 80,
+      "Filozofia": 57
+    },
+    "cache_conversion": true
+  },
+  "risk_metrics": {
+    "avg_sentiment": 0.07532551024992828,
+    "sentiment_volatility": 0.19953445302259842,
+    "extreme_sentiment_ratio": 0.0382262996941896,
+    "uncertainty_index": 0.027522935779816515,
+    "avg_engagement": 17838.886850152907
+  },
+  "market_themes": {
+    "Federal Reserve": 54,
+    "Inflation": 19,
+    "Bitcoin/Crypto": 89,
+    "China/Geopolitics": 3,
+    "AI/Technology": 122,
+    "Banking/Credit": 6,
+    "Energy": 11,
+    "Real Estate": 4
+  },
+  "full_report": "# FUND MANAGER INVESTMENT ANALYSIS\n*Analysis Date: 19.09.2025 08:44:14*\n*Data Source: 654 tweets from 33 financial accounts*\n\n---\n\n## 1. EXECUTIVE SUMMARY\n\n**Overall Risk Rating:** MODERATE\n**Investment Stance:** NEUTRALNY\n**Time Horizon:** 3-6 miesięcy z uwzględnieniem trendów długoterminowych\n\n**Key Investment Thesis:**\n1. **Market Sentiment:** Średni sentiment wynosi +0.075 z volatility 0.200, co sugeruje relatywną stabilność na rynkach\n2. **Extreme Positioning:** 3.8% tweetów wykazuje ekstremalne sentyment, co sugeruje zrównoważone nastroje\n3. **Dominujące Tematy:** AI/Technology dominuje dyskusję (122 wzmianek)\n\n---\n\n## 2. MACROECONOMIC ENVIRONMENT ASSESSMENT\n\n### Monetary Policy Signals\n**Federal Reserve Focus:** 54 wzmianek\n- Wysokie zainteresowanie polityką Fed sugeruje oczekiwania na zmiany stóp\n\n### Inflation Regime Analysis\n**Inflation Mentions:** 19 references\n- Inflacja pozostaje kluczowym tematem dla inwestorów\n\n### Geopolitical Risk Assessment\n**Geopolitical Tensions:** 3 wzmianek\n- Stabilne środowisko geopolityczne\n\n---\n\n## 3. CROSS-ASSET ANALYSIS\n\n### EQUITY MARKETS\n**Sentiment Score:** 5.4/10\n**Market Assessment:** Normal\n\n### CRYPTO/DIGITAL ASSETS\n**Bitcoin/Crypto Activity:** 89 mentions\n**Positioning:** Mainstream adoption continues\n\n### TECHNOLOGY/INNOVATION\n**AI/Tech Focus:** 122 references\n**Sector Outlook:** Technology remains dominant investment theme\n\n---\n\n## 4. CATEGORY-WISE SENTIMENT ANALYSIS\n\n### GIEŁDA\n- **Sentiment:** NEUTRAL (+0.071)\n- **Engagement Level:** 165,670 interactions\n- **Data Points:** 318 tweets\n- **Key Voices:** @Joker68069137, @Inwestomat_eu, @hedgefundowiec\n\n### KRYPTOWALUTY\n- **Sentiment:** NEUTRAL (+0.060)\n- **Engagement Level:** 15,131 interactions\n- **Data Points:** 100 tweets\n- **Key Voices:** @Dziewczynka_z_, @wesleyplpl, @Paul__Crow\n\n### GOSPODARKA\n- **Sentiment:** NEUTRAL (+0.023)\n- **Engagement Level:** 1,462 interactions\n- **Data Points:** 59 tweets\n- **Key Voices:** @wstepien_, @T_Smolarek, @KamSobolewski\n\n### POLITYKA\n- **Sentiment:** NEUTRAL (+0.078)\n- **Engagement Level:** 11,022,334 interactions\n- **Data Points:** 40 tweets\n- **Key Voices:** @realDonaldTrump, @MikolajVonskyT\n\n### NOWINKI AI\n- **Sentiment:** NEUTRAL (+0.061)\n- **Engagement Level:** 16,584 interactions\n- **Data Points:** 80 tweets\n- **Key Voices:** @huggingface, @popai_pl, @rpl_0x\n\n### FILOZOFIA\n- **Sentiment:** BULLISH (+0.198)\n- **Engagement Level:** 445,451 interactions\n- **Data Points:** 57 tweets\n- **Key Voices:** @naval, @andrzejdragan, @orangebook_\n\n\n---\n\n## 5. CLAUDE AI INSIGHTS & QUALITATIVE ANALYSIS\n\n### KLUCZOWE WNIOSKI INWESTYCYJNE\n[SIGNAL] Polityczni liderzy tweetują o kwestiach istotnych dla rynków finansowych, takich jak zmiany w polityce monetarnej czy duże wydarzenia rynkowe (np. ostrzeżenie o tsunami) | [SIGNAL] Pojawiają się komentarze na temat wzrostu wartości niektórych spółek i funduszy, np. Eric Trump's book czy inwestycje kongresmena Nanka | [SIGNAL] Zaobserwowano spekulacje na temat podejrzanych zysków polityków z obrotu akcjami (Ilhan Omar, Nancy Pelosi) | [RISKS] Możliwy negatywny wpływ politycznych komentarzy i działań na rynki finansowe | Ryzyko związane z inwestowaniem w spółki powiązane z politykami\n\n### MARKET SENTIMENT INSIGHTS\nBullish signals: 1 areas | Bearish signals: 1 concerns | Emerging trends: 2\n\n### KONKRETNE REKOMENDACJE\n[BUY] Consider: Spółki z sektora AI, takie jak Bigbear AI i Tempus AI, które wydają się interesujące dla niektórych polityków | [AVOID] Inwestycje w spółki powiązane z politykami, ze względu na potencjalne ryzyka | [TIMING] Ostrożne podejście ze względu na niepewność związaną z czynnikami politycznymi...\n\n### MAKROEKONOMICZNE SYGNAŁY\n[FED] Policy: ['Brak wyraźnych sygnałów dotyczących polityki Fed czy inflacji', 'Jedynie ogólne komentarze na tema...\n\n---\n\n## 6. RISK FACTORS & POSITIONING\n\n### Current Risk Environment\n- **Sentiment Volatility:** 0.200 (Normal)\n- **Extreme Positioning:** 3.8% of signals show extreme sentiment\n- **Uncertainty Index:** 0.028\n\n### Key Risk Factors\n1. **Market Consensus Risk:** High concentration in popular themes may indicate crowded trades\n2. **Sentiment Extremes:** Balanced sentiment distribution\n3. **Volatility Regime:** Normal volatility environment\n\n---\n\n## 7. PORTFOLIO ALLOCATION RECOMMENDATIONS\n\n### STRATEGIC ASSET ALLOCATION (6-12 months)\n```\nCash & Equivalents: 10%\nDeveloped Market Equities: 55%\nEmerging Market Equities: 12%\nGovernment Bonds: 10%\nCorporate Credit: 8%\nCommodities/Gold: 2%\nAlternatives: 3%\n```\n\n### TACTICAL RECOMMENDATIONS\n\n**OVERWEIGHT:** Technology sector - AI adoption driving structural growth\n**TACTICAL:** Small crypto allocation (1-3%) - institutional adoption accelerating\n\n---\n\n## 8. EXECUTION FRAMEWORK\n\n### Position Sizing Guidelines\n- **High Conviction Trades:** Maximum 5% per position\n- **Medium Conviction:** Maximum 3% per position\n- **Tactical/Hedge Positions:** Maximum 2% per position\n\n### Risk Management Triggers\n- **Portfolio Review:** If sentiment volatility exceeds 0.5\n- **Rebalancing:** Monthly or on 10% deviation from target allocation\n- **Defensive Pivot:** If extreme sentiment ratio exceeds 40%\n\n### Monitoring Framework\n- **Daily:** Sentiment tracking and position sizing\n- **Weekly:** Cross-asset correlation analysis\n- **Monthly:** Strategic allocation review\n\n---\n\n**DISCLAIMER:** This analysis is based on social media sentiment and should be combined with fundamental research, technical analysis, and risk management protocols. Past performance does not guarantee future results.\n\n**Portfolio Size Assumption:** $100M+ institutional portfolio\n**Risk Tolerance:** Moderate institutional investor\n**Benchmark:** 60/40 stock/bond allocation\n\n---\n*Analysis Framework: Ray Dalio-inspired systematic approach*\n*Generated: 19.09.2025 08:44:14*\n"
+}

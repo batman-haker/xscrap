@@ -201,71 +201,132 @@ class StreamlitDashboard:
 
     def render_main_metrics(self):
         """Render main metrics dashboard"""
-        latest_data = self.load_latest_processed_data()
+        # Load comprehensive tweets data for main metrics
+        comprehensive_data = self.load_comprehensive_data()
 
-        if not latest_data:
-            st.warning("Brak danych do wyświetlenia. Uruchom analizę aby wygenerować dane.")
+        if not comprehensive_data:
+            st.warning("Brak danych do wyświetlenia. Użyj przycisku 'Użyj danych z cache' w zakładce Tweety.")
             return
 
-        # Overall sentiment
-        overall_sentiment = latest_data.get('overall_sentiment', {})
-        sentiment_score = overall_sentiment.get('overall_score', 0.0)
-        sentiment_label = overall_sentiment.get('sentiment_label', 'Unknown')
+        # Extract metrics from comprehensive data
+        collection_summary = comprehensive_data.get('collection_summary', {})
+        tweets_by_category = comprehensive_data.get('tweets_by_category', {})
+
+        total_tweets = collection_summary.get('total_tweets', 0)
+        total_accounts = collection_summary.get('total_accounts', 0)
+        active_categories = len([cat for cat, tweets in tweets_by_category.items() if tweets])
+
+        # Calculate basic sentiment
+        total_engagement = 0
+        positive_tweets = 0
+        negative_tweets = 0
+
+        for category, tweets in tweets_by_category.items():
+            for tweet in tweets:
+                engagement = tweet.get('like_count', 0) + tweet.get('retweet_count', 0)
+                total_engagement += engagement
+
+                # Simple sentiment based on text length and engagement
+                text = tweet.get('text', '')
+                if 'bullish' in text.lower() or 'good' in text.lower() or 'up' in text.lower():
+                    positive_tweets += 1
+                elif 'bearish' in text.lower() or 'bad' in text.lower() or 'down' in text.lower():
+                    negative_tweets += 1
+
+        sentiment_score = (positive_tweets - negative_tweets) / max(total_tweets, 1) * 100
 
         col1, col2, col3, col4 = st.columns(4)
 
         with col1:
-            # Sentiment score with color
-            if sentiment_score > 0.2:
+            if sentiment_score > 20:
+                sentiment_label = "Bullish"
                 delta_color = "normal"
-            elif sentiment_score < -0.2:
+            elif sentiment_score < -20:
+                sentiment_label = "Bearish"
                 delta_color = "inverse"
             else:
+                sentiment_label = "Neutral"
                 delta_color = "off"
 
             st.metric(
-                "Overall Sentiment",
-                f"{sentiment_score:.2f}",
-                delta=sentiment_label,
+                "Market Sentiment",
+                sentiment_label,
+                delta=f"{sentiment_score:+.1f}%",
                 delta_color=delta_color
             )
 
         with col2:
-            total_tweets = latest_data.get('total_tweets', 0)
-            st.metric("Łączne tweety", total_tweets)
+            st.metric("Łączne tweety", f"{total_tweets:,}")
 
         with col3:
-            categories = latest_data.get('categories', {})
-            active_categories = sum(1 for cat_data in categories.values()
-                                  if cat_data.get('tweet_count', 0) > 0)
             st.metric("Aktywne kategorie", active_categories)
 
         with col4:
-            # Risk level (derived from sentiment)
-            if abs(sentiment_score) > 0.7:
-                risk_level = "High"
-                risk_color = "🔴"
-            elif abs(sentiment_score) > 0.4:
-                risk_level = "Medium"
-                risk_color = "🟡"
+            avg_engagement = total_engagement / max(total_tweets, 1)
+            if avg_engagement > 10000:
+                engagement_level = "Very High"
+                engagement_color = "🔴"
+            elif avg_engagement > 1000:
+                engagement_level = "High"
+                engagement_color = "🟡"
             else:
-                risk_level = "Low"
-                risk_color = "🟢"
+                engagement_level = "Normal"
+                engagement_color = "🟢"
 
-            st.metric("Poziom ryzyka", f"{risk_color} {risk_level}")
+            st.metric("Zaangażowanie", f"{engagement_color} {engagement_level}")
+
+        # Additional metrics row
+        col1, col2, col3, col4 = st.columns(4)
+
+        with col1:
+            st.metric("Konta", f"{total_accounts}")
+
+        with col2:
+            avg_tweets_per_account = total_tweets / max(total_accounts, 1)
+            st.metric("Śr. tweetów/konto", f"{avg_tweets_per_account:.1f}")
+
+        with col3:
+            # Most active category
+            most_active_cat = max(tweets_by_category.keys(),
+                                key=lambda k: len(tweets_by_category[k]),
+                                default="N/A")
+            if most_active_cat != "N/A":
+                most_active_count = len(tweets_by_category[most_active_cat])
+                st.metric("Najaktywniejsza", f"{most_active_cat} ({most_active_count})")
+            else:
+                st.metric("Najaktywniejsza", "N/A")
+
+        with col4:
+            timestamp = comprehensive_data.get('timestamp', '')
+            if timestamp:
+                try:
+                    dt = datetime.fromisoformat(timestamp)
+                    age = datetime.now() - dt
+                    if age.total_seconds() < 3600:  # Less than 1 hour
+                        freshness = "🟢 Fresh"
+                    elif age.total_seconds() < 14400:  # Less than 4 hours
+                        freshness = "🟡 Recent"
+                    else:
+                        freshness = "🔴 Old"
+                except:
+                    freshness = "❓ Unknown"
+            else:
+                freshness = "❓ Unknown"
+            st.metric("Świeżość danych", freshness)
 
     def render_sentiment_chart(self):
         """Render sentiment visualization"""
-        latest_data = self.load_latest_processed_data()
+        comprehensive_data = self.load_comprehensive_data()
 
-        if not latest_data:
+        if not comprehensive_data:
+            st.warning("Brak danych do wykresu. Użyj przycisku 'Użyj danych z cache' w zakładce Tweety.")
             return
 
         st.subheader("📈 Analiza Sentymenty")
 
-        categories = latest_data.get('categories', {})
+        tweets_by_category = comprehensive_data.get('tweets_by_category', {})
 
-        if not categories:
+        if not tweets_by_category:
             st.warning("Brak danych kategorii do wyświetlenia")
             return
 
@@ -273,14 +334,31 @@ class StreamlitDashboard:
         category_names = []
         sentiment_scores = []
         tweet_counts = []
-        sentiment_labels = []
+        engagement_scores = []
 
-        for category, data in categories.items():
-            if data.get('tweet_count', 0) > 0:
+        for category, tweets in tweets_by_category.items():
+            if tweets:
                 category_names.append(category.replace('_', ' ').title())
-                sentiment_scores.append(data.get('weighted_sentiment', 0.0))
-                tweet_counts.append(data.get('tweet_count', 0))
-                sentiment_labels.append(data.get('sentiment_label', 'Unknown'))
+                tweet_counts.append(len(tweets))
+
+                # Calculate sentiment for category
+                positive = 0
+                negative = 0
+                total_engagement = 0
+
+                for tweet in tweets:
+                    text = tweet.get('text', '').lower()
+                    engagement = tweet.get('like_count', 0) + tweet.get('retweet_count', 0)
+                    total_engagement += engagement
+
+                    if any(word in text for word in ['bullish', 'good', 'up', 'growth', 'positive']):
+                        positive += 1
+                    elif any(word in text for word in ['bearish', 'bad', 'down', 'crash', 'negative']):
+                        negative += 1
+
+                sentiment_score = (positive - negative) / max(len(tweets), 1)
+                sentiment_scores.append(sentiment_score)
+                engagement_scores.append(total_engagement / max(len(tweets), 1))
 
         if not category_names:
             st.warning("Brak aktywnych kategorii")
@@ -298,8 +376,8 @@ class StreamlitDashboard:
                 x=category_names,
                 y=sentiment_scores,
                 name="Sentiment Score",
-                marker_color=['green' if s > 0 else 'red' if s < 0 else 'gray' for s in sentiment_scores],
-                text=[f"{s:.2f}" for s in sentiment_scores],
+                marker_color=['green' if s > 0.1 else 'red' if s < -0.1 else 'gray' for s in sentiment_scores],
+                text=[f"{s:+.2f}" for s in sentiment_scores],
                 textposition="auto"
             ),
             secondary_y=False,
@@ -326,10 +404,21 @@ class StreamlitDashboard:
         fig.update_layout(
             height=500,
             showlegend=True,
-            title_text="Sentiment i aktywność według kategorii"
+            title_text="Sentiment i aktywność według kategorii (654 tweets)"
         )
 
         st.plotly_chart(fig, use_container_width=True)
+
+        # Show summary stats
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.metric("Łączne tweety", sum(tweet_counts))
+        with col2:
+            avg_sentiment = sum(sentiment_scores) / len(sentiment_scores) if sentiment_scores else 0
+            st.metric("Średni sentiment", f"{avg_sentiment:+.3f}")
+        with col3:
+            total_engagement = sum(engagement_scores)
+            st.metric("Łączne zaangażowanie", f"{total_engagement:,.0f}")
 
     def render_category_details(self):
         """Render detailed category analysis"""
@@ -402,7 +491,7 @@ class StreamlitDashboard:
                     for j, tweet in enumerate(top_tweets[:3], 1):
                         user = tweet.get('user', {})
                         username = user.get('screen_name', 'Unknown')
-                        text = tweet.get('text', '')[:150] + '...' if len(tweet.get('text', '')) > 150 else tweet.get('text', '')
+                        text = tweet.get('text', '')
                         influence = tweet.get('influence_score', 0.0)
 
                         st.markdown(f"""
@@ -599,9 +688,29 @@ class StreamlitDashboard:
             st.error(f"Błąd ładowania danych: {e}")
             return None
 
+    def load_comprehensive_data(self):
+        """Load comprehensive data with statistics"""
+        try:
+            comprehensive_file = 'data/raw/comprehensive_tweets_current.json'
+            if os.path.exists(comprehensive_file):
+                with open(comprehensive_file, 'r', encoding='utf-8') as f:
+                    return json.load(f)
+            return None
+        except Exception as e:
+            st.error(f"Błąd ładowania danych: {e}")
+            return None
+
     def load_categorized_tweets(self):
         """Load categorized tweets data"""
         try:
+            # First try comprehensive tweets (new system)
+            comprehensive_file = 'data/raw/comprehensive_tweets_current.json'
+            if os.path.exists(comprehensive_file):
+                with open(comprehensive_file, 'r', encoding='utf-8') as f:
+                    data = json.load(f)
+                    return data.get('tweets_by_category', {})
+
+            # Fallback to sample file
             sample_file = 'data/raw/sample_categorized_tweets.json'
             if os.path.exists(sample_file):
                 with open(sample_file, 'r', encoding='utf-8') as f:
@@ -623,28 +732,45 @@ class StreamlitDashboard:
             # Button to fetch new tweets
             col1, col2 = st.columns(2)
             with col1:
-                if st.button("🔄 Pobierz przykładowe tweety", key="sample_tweets"):
-                    with st.spinner("Pobieranie tweetów..."):
+                if st.button("🔄 Użyj danych z cache", key="sample_tweets"):
+                    with st.spinner("Ładowanie danych z cache..."):
                         try:
                             import subprocess
                             result = subprocess.run(
-                                ['python', 'quick_sample_tweets.py'],
+                                ['python', 'convert_cache_to_comprehensive.py'],
                                 cwd=os.getcwd(),
                                 capture_output=True,
                                 text=True,
-                                timeout=180
+                                timeout=60
                             )
                             if result.returncode == 0:
-                                st.success("✅ Pobrano nowe tweety!")
+                                st.success("✅ Załadowano dane z cache!")
+                                st.rerun()
+                            else:
+                                st.error(f"❌ Błąd: {result.stderr}")
+                        except Exception as e:
+                            st.error(f"❌ Błąd podczas ładowania: {e}")
+
+            with col2:
+                if st.button("📊 Pobierz wszystkie konta", key="all_tweets"):
+                    st.info("Pobieranie wszystkich kont może potrwać kilka minut...")
+                    with st.spinner("Pobieranie kompletnych danych z cache..."):
+                        try:
+                            import subprocess
+                            result = subprocess.run(
+                                ['python', 'comprehensive_tweet_collector.py'],
+                                cwd=os.getcwd(),
+                                capture_output=True,
+                                text=True,
+                                timeout=600
+                            )
+                            if result.returncode == 0:
+                                st.success("✅ Pobrano kompletne dane!")
                                 st.rerun()
                             else:
                                 st.error(f"❌ Błąd: {result.stderr}")
                         except Exception as e:
                             st.error(f"❌ Błąd podczas pobierania: {e}")
-
-            with col2:
-                if st.button("📊 Pobierz wszystkie konta", key="all_tweets"):
-                    st.info("Pobieranie wszystkich kont może potrwać kilka minut...")
             return
 
         # Display summary stats
@@ -700,9 +826,7 @@ class StreamlitDashboard:
                     retweets = tweet.get('retweet_count', 0)
                     replies = tweet.get('reply_count', 0)
 
-                    # Clean up text for display
-                    if len(text) > 300:
-                        text = text[:300] + "..."
+                    # Display full text
 
                     # Format date
                     try:
@@ -742,11 +866,11 @@ class StreamlitDashboard:
                     try:
                         import subprocess
                         result = subprocess.run(
-                            ['python', 'quick_sample_tweets.py'],
+                            ['python', 'comprehensive_tweet_collector.py', 'quick'],
                             cwd=os.getcwd(),
                             capture_output=True,
                             text=True,
-                            timeout=180
+                            timeout=300
                         )
                         if result.returncode == 0:
                             st.success("✅ Odświeżono wszystkie tweety!")
@@ -895,6 +1019,430 @@ class StreamlitDashboard:
         with col2:
             st.info("💡 Tip: Najpierw odśwież tweety, potem analizę dla najaktualniejszych wyników")
 
+    def render_fund_manager_analysis(self):
+        """Render professional fund manager analysis"""
+        st.subheader("💼 Fund Manager Analysis - Ray Dalio Style")
+
+        # Load fund manager analysis
+        try:
+            analysis_file = 'data/analysis/fund_manager_analysis_current.json'
+            if os.path.exists(analysis_file):
+                with open(analysis_file, 'r', encoding='utf-8') as f:
+                    analysis_data = json.load(f)
+            else:
+                analysis_data = None
+
+            report_file = 'data/analysis/fund_manager_analysis_current.md'
+            if os.path.exists(report_file):
+                with open(report_file, 'r', encoding='utf-8') as f:
+                    report_content = f.read()
+            else:
+                report_content = None
+
+        except Exception as e:
+            st.error(f"Błąd ładowania analizy fund managera: {e}")
+            analysis_data = None
+            report_content = None
+
+        if not analysis_data or not report_content:
+            st.warning("Brak analizy fund managera. Wygeneruj nową analizę.")
+
+            col1, col2 = st.columns(2)
+            with col1:
+                if st.button("🏦 Wygeneruj analizę Fund Manager", key="generate_fund_analysis"):
+                    with st.spinner("Generowanie profesjonalnej analizy inwestycyjnej..."):
+                        try:
+                            import subprocess
+                            # First prepare demo data
+                            subprocess.run(['python', 'prepare_demo_data.py'],
+                                         cwd=os.getcwd(), timeout=30)
+                            # Then run fund manager analysis
+                            result = subprocess.run(
+                                ['python', 'fund_manager_analysis.py'],
+                                cwd=os.getcwd(),
+                                capture_output=True,
+                                text=True,
+                                timeout=120
+                            )
+                            if result.returncode == 0:
+                                st.success("✅ Analiza Fund Manager wygenerowana!")
+                                st.rerun()
+                            else:
+                                st.error(f"❌ Błąd: {result.stderr}")
+                        except Exception as e:
+                            st.error(f"❌ Błąd podczas generowania: {e}")
+
+            with col2:
+                if st.button("📊 Pobierz wszystkie dane", key="collect_comprehensive"):
+                    st.info("Pobieranie 10 tweetów z każdego konta (może potrwać kilka minut)")
+                    with st.spinner("Pobieranie kompletnych danych..."):
+                        try:
+                            import subprocess
+                            result = subprocess.run(
+                                ['python', 'comprehensive_tweet_collector.py'],
+                                cwd=os.getcwd(),
+                                capture_output=True,
+                                text=True,
+                                timeout=600
+                            )
+                            if result.returncode == 0:
+                                st.success("✅ Kompletne dane pobrane!")
+                                # Auto-run fund manager analysis
+                                subprocess.run(['python', 'fund_manager_analysis.py'],
+                                             cwd=os.getcwd(), timeout=120)
+                                st.success("✅ Analiza zaktualizowana!")
+                                st.rerun()
+                            else:
+                                st.error(f"❌ Błąd pobierania: {result.stderr}")
+                        except Exception as e:
+                            st.error(f"❌ Błąd: {e}")
+            return
+
+        # Display professional metrics
+        if analysis_data:
+            st.markdown("### 🎯 Professional Investment Metrics")
+
+            risk_metrics = analysis_data.get('risk_metrics', {})
+            market_themes = analysis_data.get('market_themes', {})
+
+            col1, col2, col3, col4 = st.columns(4)
+
+            with col1:
+                avg_sentiment = risk_metrics.get('avg_sentiment', 0.0)
+                if avg_sentiment > 0.1:
+                    stance = "BULLISH"
+                    color = "green"
+                elif avg_sentiment < -0.1:
+                    stance = "BEARISH"
+                    color = "red"
+                else:
+                    stance = "NEUTRAL"
+                    color = "gray"
+
+                st.metric("Market Stance", stance, delta=f"{avg_sentiment:+.3f}")
+
+            with col2:
+                volatility = risk_metrics.get('sentiment_volatility', 0.0)
+                vol_level = "HIGH" if volatility > 0.4 else "MODERATE" if volatility > 0.2 else "LOW"
+                st.metric("Volatility Regime", vol_level, delta=f"{volatility:.3f}")
+
+            with col3:
+                if market_themes:
+                    top_theme = max(market_themes, key=market_themes.get)
+                    theme_count = market_themes[top_theme]
+                    st.metric("Dominant Theme", top_theme, delta=f"{theme_count} signals")
+                else:
+                    st.metric("Dominant Theme", "N/A", delta="0 signals")
+
+            with col4:
+                tweets_analyzed = analysis_data.get('data_summary', {}).get('total_tweets', 0)
+                accounts_analyzed = analysis_data.get('data_summary', {}).get('total_accounts', 0)
+                st.metric("Data Coverage", f"{accounts_analyzed} accounts", delta=f"{tweets_analyzed} tweets")
+
+            # Risk assessment section
+            st.markdown("### ⚠️ Risk Assessment")
+
+            extreme_ratio = risk_metrics.get('extreme_sentiment_ratio', 0.0)
+            uncertainty_index = risk_metrics.get('uncertainty_index', 0.0)
+
+            col1, col2, col3 = st.columns(3)
+
+            with col1:
+                if extreme_ratio > 0.3:
+                    risk_color = "🔴"
+                    risk_text = "HIGH RISK"
+                elif extreme_ratio > 0.15:
+                    risk_color = "🟡"
+                    risk_text = "MODERATE"
+                else:
+                    risk_color = "🟢"
+                    risk_text = "LOW RISK"
+
+                st.markdown(f"**Extreme Sentiment Risk**")
+                st.markdown(f"{risk_color} {risk_text} ({extreme_ratio:.1%})")
+
+            with col2:
+                if uncertainty_index > 0.3:
+                    uncertainty_color = "🔴"
+                    uncertainty_text = "HIGH"
+                elif uncertainty_index > 0.15:
+                    uncertainty_color = "🟡"
+                    uncertainty_text = "MODERATE"
+                else:
+                    uncertainty_color = "🟢"
+                    uncertainty_text = "LOW"
+
+                st.markdown(f"**Uncertainty Index**")
+                st.markdown(f"{uncertainty_color} {uncertainty_text} ({uncertainty_index:.3f})")
+
+            with col3:
+                avg_engagement = risk_metrics.get('avg_engagement', 0)
+                if avg_engagement > 10000:
+                    engagement_text = "VERY HIGH"
+                    engagement_color = "🔴"
+                elif avg_engagement > 1000:
+                    engagement_text = "HIGH"
+                    engagement_color = "🟡"
+                else:
+                    engagement_text = "NORMAL"
+                    engagement_color = "🟢"
+
+                st.markdown(f"**Market Attention**")
+                st.markdown(f"{engagement_color} {engagement_text} ({avg_engagement:,.0f})")
+
+        # Analysis timestamp
+        if analysis_data:
+            timestamp = analysis_data.get('timestamp', '')
+            if timestamp:
+                try:
+                    dt = datetime.fromisoformat(timestamp)
+                    formatted_time = dt.strftime('%d.%m.%Y %H:%M:%S')
+                    st.caption(f"Professional Analysis Generated: {formatted_time}")
+                except:
+                    st.caption(f"Analysis from: {timestamp}")
+
+        # Full professional report
+        if report_content:
+            st.markdown("### 📋 Complete Fund Manager Report")
+
+            # Download buttons
+            col1, col2, col3 = st.columns([2, 1, 1])
+            with col2:
+                st.download_button(
+                    label="📄 Download Report",
+                    data=report_content,
+                    file_name=f"fund_manager_analysis_{datetime.now().strftime('%Y%m%d_%H%M%S')}.md",
+                    mime="text/markdown",
+                    key="download_fund_analysis"
+                )
+
+            with col3:
+                if analysis_data:
+                    st.download_button(
+                        label="📊 Download Data",
+                        data=json.dumps(analysis_data, indent=2, ensure_ascii=False),
+                        file_name=f"fund_analysis_data_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json",
+                        mime="application/json",
+                        key="download_fund_data"
+                    )
+
+            # Show report with professional formatting
+            with st.expander("📈 Professional Investment Analysis", expanded=True):
+                st.markdown(report_content)
+
+        # Update controls
+        st.markdown("---")
+        st.markdown("### 🔄 Analysis Management")
+
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("🔄 Refresh Fund Analysis", key="refresh_fund_analysis"):
+                with st.spinner("Refreshing professional analysis..."):
+                    try:
+                        import subprocess
+                        # Run fund manager analysis
+                        result = subprocess.run(
+                            ['python', 'fund_manager_analysis.py'],
+                            cwd=os.getcwd(),
+                            capture_output=True,
+                            text=True,
+                            timeout=120
+                        )
+                        if result.returncode == 0:
+                            st.success("✅ Fund Manager Analysis refreshed!")
+                            st.rerun()
+                        else:
+                            st.error(f"❌ Error: {result.stderr}")
+                    except Exception as e:
+                        st.error(f"❌ Error during refresh: {e}")
+
+        with col2:
+            st.info("💡 Pro Tip: This analysis follows Ray Dalio's systematic investment principles")
+
+    def render_deep_sectoral_analysis(self):
+        """Render deep sectoral analysis results"""
+        st.subheader("🎯 Głęboka Analiza Sektorowa - Interpretacja Poglądów Ekspertów")
+
+        st.markdown("""
+        **Typ analizy:** Semantyczna interpretacja wypowiedzi autorów z konfrontacją różnych poglądów
+        **Model AI:** Claude 3.5 Haiku (najnowszy dostępny)
+        **Fokus:** Wydobycie SENSU wypowiedzi zamiast liczenia słów kluczowych
+        """)
+
+        # Check if analysis files exist
+        analysis_files = {
+            'Giełda': 'data/analysis/deep_analysis_giełda.json',
+            'Kryptowaluty': 'data/analysis/deep_analysis_kryptowaluty.json',
+            'Gospodarka': 'data/analysis/deep_analysis_gospodarka.json',
+            'Polityka': 'data/analysis/deep_analysis_polityka.json',
+            'Nowinki AI': 'data/analysis/deep_analysis_nowinki ai.json',
+            'Filozofia': 'data/analysis/deep_analysis_filozofia.json'
+        }
+
+        # Check which analyses are available
+        available_analyses = {}
+        for sector, file_path in analysis_files.items():
+            if os.path.exists(file_path):
+                try:
+                    with open(file_path, 'r', encoding='utf-8') as f:
+                        available_analyses[sector] = json.load(f)
+                except Exception as e:
+                    st.error(f"Błąd ładowania analizy {sector}: {e}")
+
+        if not available_analyses:
+            st.warning("Brak analiz sektorowych. Wygeneruj analizy używając przycisku poniżej.")
+
+            col1, col2 = st.columns(2)
+            with col1:
+                if st.button("🧠 Wygeneruj Głębokie Analizy Sektorowe", key="generate_deep_analysis"):
+                    with st.spinner("Generowanie głębokich analiz sektorowych..."):
+                        try:
+                            import subprocess
+                            result = subprocess.run(
+                                ['python', 'deep_sectoral_analysis.py'],
+                                cwd=os.getcwd(),
+                                capture_output=True,
+                                text=True,
+                                timeout=600
+                            )
+                            if result.returncode == 0:
+                                st.success("✅ Głębokie analizy sektorowe wygenerowane!")
+                                st.rerun()
+                            else:
+                                st.error(f"❌ Błąd: {result.stderr}")
+                        except Exception as e:
+                            st.error(f"❌ Błąd podczas generowania: {e}")
+
+            with col2:
+                st.info("💡 Analizy używają 654 tweetów z cache (zero kosztów TwitterAPI)")
+            return
+
+        # Display summary metrics
+        st.markdown("### 📊 Podsumowanie Analiz")
+
+        col1, col2, col3, col4 = st.columns(4)
+
+        with col1:
+            st.metric("Sektory przeanalizowane", len(available_analyses))
+
+        with col2:
+            latest_analysis = max(available_analyses.values(),
+                                key=lambda x: x.get('timestamp', ''))
+            model_used = latest_analysis.get('model_used', 'Unknown')
+            st.metric("Model Claude", model_used.split('-')[-1] if model_used else 'Unknown')
+
+        with col3:
+            latest_time = latest_analysis.get('timestamp', '')
+            if latest_time:
+                try:
+                    dt = datetime.fromisoformat(latest_time)
+                    time_ago = datetime.now() - dt
+                    if time_ago.total_seconds() < 3600:
+                        freshness = f"{int(time_ago.total_seconds()/60)}m ago"
+                    else:
+                        freshness = f"{int(time_ago.total_seconds()/3600)}h ago"
+                except:
+                    freshness = "Unknown"
+            else:
+                freshness = "Unknown"
+            st.metric("Ostatnia analiza", freshness)
+
+        with col4:
+            total_insights = sum(len(analysis.get('analysis', '').split('###')) for analysis in available_analyses.values())
+            st.metric("Insights wygenerowane", total_insights)
+
+        # Display sectoral analyses
+        st.markdown("### 🔍 Analizy Sektorowe")
+
+        # Create tabs for each sector
+        if available_analyses:
+            sector_tabs = st.tabs(list(available_analyses.keys()))
+
+            for i, (sector, analysis_data) in enumerate(available_analyses.items()):
+                with sector_tabs[i]:
+                    st.markdown(f"#### 📈 Sektor: {sector}")
+
+                    # Show model and timestamp
+                    col1, col2 = st.columns(2)
+                    with col1:
+                        st.caption(f"Model: {analysis_data.get('model_used', 'Unknown')}")
+                    with col2:
+                        timestamp = analysis_data.get('timestamp', '')
+                        if timestamp:
+                            try:
+                                dt = datetime.fromisoformat(timestamp)
+                                formatted_time = dt.strftime('%d.%m.%Y %H:%M')
+                                st.caption(f"Wygenerowano: {formatted_time}")
+                            except:
+                                st.caption(f"Wygenerowano: {timestamp}")
+
+                    # Display analysis content
+                    analysis_text = analysis_data.get('analysis', 'Brak analizy')
+
+                    # Create expandable sections for better readability
+                    with st.expander("📖 Pełna Analiza Sektorowa", expanded=True):
+                        st.markdown(analysis_text)
+
+                    # Download button for this sector
+                    col1, col2 = st.columns([3, 1])
+                    with col2:
+                        st.download_button(
+                            label=f"📄 Pobierz {sector}",
+                            data=json.dumps(analysis_data, indent=2, ensure_ascii=False),
+                            file_name=f"deep_analysis_{sector.lower()}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json",
+                            mime="application/json",
+                            key=f"download_{sector}"
+                        )
+
+        # Actions section
+        st.markdown("---")
+        st.markdown("### 🔄 Zarządzanie Analizami")
+
+        col1, col2, col3 = st.columns(3)
+
+        with col1:
+            if st.button("🔄 Odśwież Analizy", key="refresh_deep_analysis"):
+                with st.spinner("Odświeżanie analiz sektorowych..."):
+                    try:
+                        import subprocess
+                        result = subprocess.run(
+                            ['python', 'deep_sectoral_analysis.py'],
+                            cwd=os.getcwd(),
+                            capture_output=True,
+                            text=True,
+                            timeout=600
+                        )
+                        if result.returncode == 0:
+                            st.success("✅ Analizy odświeżone!")
+                            st.rerun()
+                        else:
+                            st.error(f"❌ Błąd: {result.stderr}")
+                    except Exception as e:
+                        st.error(f"❌ Błąd podczas odświeżania: {e}")
+
+        with col2:
+            # Download all analyses
+            if available_analyses:
+                comprehensive_data = {
+                    'metadata': {
+                        'generated_at': datetime.now().isoformat(),
+                        'total_sectors': len(available_analyses),
+                        'analysis_type': 'deep_sectoral_semantic'
+                    },
+                    'sectoral_analyses': available_analyses
+                }
+
+                st.download_button(
+                    label="📦 Pobierz Wszystkie",
+                    data=json.dumps(comprehensive_data, indent=2, ensure_ascii=False),
+                    file_name=f"comprehensive_deep_analysis_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json",
+                    mime="application/json",
+                    key="download_all_deep_analyses"
+                )
+
+        with col3:
+            st.info("💡 Tip: Analizy fokusują się na interpretacji ZNACZENIA wypowiedzi autorów")
+
     def get_latest_processed_file(self):
         """Get path to latest processed file"""
         processed_files = glob.glob('data/processed/analysis_*.json')
@@ -909,7 +1457,7 @@ class StreamlitDashboard:
         hours_back = self.render_sidebar()
 
         # Main content area
-        tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["📊 Dashboard", "📱 Tweety", "🧠 Analiza", "📈 Wykresy", "🔍 Szczegóły", "🔥 Aktywność"])
+        tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs(["📊 Dashboard", "📱 Tweety", "🧠 Analiza", "📈 Wykresy", "🔍 Szczegóły", "🔥 Aktywność", "💼 Fund Manager", "🎯 Analiza Sektorowa"])
 
         with tab1:
             self.render_main_metrics()
@@ -928,6 +1476,12 @@ class StreamlitDashboard:
 
         with tab6:
             self.render_recent_activity()
+
+        with tab7:
+            self.render_fund_manager_analysis()
+
+        with tab8:
+            self.render_deep_sectoral_analysis()
 
         # Footer
         st.markdown("---")
