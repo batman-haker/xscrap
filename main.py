@@ -303,11 +303,11 @@ def main():
 
     # Validate setup
     if not analyzer.validate_setup():
-        print("❌ System validation failed")
+        print("[ERROR] System validation failed")
         sys.exit(1)
 
     if args.validate:
-        print("✅ System validation passed")
+        print("[SUCCESS] System validation passed")
         sys.exit(0)
 
     # Run based on mode

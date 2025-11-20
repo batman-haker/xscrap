@@ -10,17 +10,52 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-def get_sample_tweets():
-    """Get sample tweets from a few accounts per category"""
-
-    sample_accounts = {
-        'Giełda': ['stocktavia', 'PelosiTracker_', 'wallstengine'],
-        'Kryptowaluty': ['KO_Kryptowaluty', 'Dystopia_PL'],
-        'Gospodarka': ['wstepien_', 'KamSobolewski'],
-        'Polityka': ['realDonaldTrump'],
-        'Nowinki AI': ['popai_pl', 'huggingface'],
-        'Filozofia': ['naval', 'andrzejdragan']
+def parse_all_accounts():
+    """Parse all accounts from lista kont.txt"""
+    accounts = {
+        'Giełda': [],
+        'Kryptowaluty': [],
+        'Gospodarka': [],
+        'Polityka': [],
+        'Nowinki AI': [],
+        'Filozofia': []
     }
+
+    try:
+        with open('C:\\Xscrap\\lista kont.txt', 'r', encoding='utf-8') as f:
+            content = f.read()
+
+        lines = content.strip().split('\n')
+
+        for line in lines:
+            if ':' in line:
+                category_part, urls_part = line.split(':', 1)
+
+                # Extract usernames from URLs
+                urls = re.findall(r'https://x\.com/([a-zA-Z0-9_]+)', urls_part)
+
+                if 'Giełda' in line or category_part.startswith('1'):
+                    accounts['Giełda'] = urls
+                elif 'Kryptowaluty' in line or category_part.startswith('2'):
+                    accounts['Kryptowaluty'] = urls
+                elif 'Gospodarka' in line or category_part.startswith('3'):
+                    accounts['Gospodarka'] = urls
+                elif 'Polityka' in line or category_part.startswith('4'):
+                    accounts['Polityka'] = urls
+                elif 'Nowinki AI' in line or category_part.startswith('5'):
+                    accounts['Nowinki AI'] = urls
+                elif 'Filozofia' in line or category_part.startswith('6'):
+                    accounts['Filozofia'] = urls
+
+    except Exception as e:
+        print(f"Błąd odczytu pliku: {e}")
+
+    return accounts
+
+def get_comprehensive_tweets():
+    """Get 10 tweets from ALL accounts across categories"""
+
+    all_accounts = parse_all_accounts()
 
     api_key = os.getenv('TWITTERAPI_IO_KEY')
     headers = {'x-api-key': api_key}

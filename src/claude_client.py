@@ -17,7 +17,7 @@ class ClaudeAnalyst:
             raise ValueError("CLAUDE_API_KEY not found in environment variables")
 
         self.client = anthropic.Anthropic(api_key=self.api_key)
-        self.model = "claude-3-sonnet-20240229"
+        self.model = "claude-3-5-sonnet-20241022"
 
         # Setup logging
         logging.basicConfig(level=logging.INFO)

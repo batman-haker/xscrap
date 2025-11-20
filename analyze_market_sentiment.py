@@ -15,8 +15,16 @@ def analyze_tweets_with_claude():
 
     # Load tweets data
     try:
-        with open('data/raw/sample_categorized_tweets.json', 'r', encoding='utf-8') as f:
-            tweets_data = json.load(f)
+        # First try comprehensive tweets (new system)
+        comprehensive_file = 'data/raw/comprehensive_tweets_current.json'
+        if os.path.exists(comprehensive_file):
+            with open(comprehensive_file, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+                tweets_data = data.get('tweets_by_category', {})
+        else:
+            # Fallback to sample file
+            with open('data/raw/sample_categorized_tweets.json', 'r', encoding='utf-8') as f:
+                tweets_data = json.load(f)
     except Exception as e:
         print(f"Błąd ładowania tweetów: {e}")
         return None
@@ -94,7 +102,7 @@ Analiza powinna być konkretna, praktyczna i oparta na danych. Uwzględnij konte
         print("Wysyłam dane do Claude do analizy...")
 
         response = client.messages.create(
-            model="claude-3-5-sonnet-20241022",
+            model="claude-3-haiku-20240307",
             max_tokens=4000,
             temperature=0.3,
             messages=[{
@@ -136,7 +144,7 @@ Analiza powinna być konkretna, praktyczna i oparta na danych. Uwzględnij konte
         return analysis_data
 
     except Exception as e:
-        print(f"❌ Błąd podczas analizy Claude: {e}")
+        print(f"[ERROR] Blad podczas analizy Claude: {e}")
         return None
 
 if __name__ == "__main__":
@@ -145,8 +153,8 @@ if __name__ == "__main__":
     result = analyze_tweets_with_claude()
 
     if result:
-        print("\n🎉 Analiza ukończona pomyślnie!")
+        print("\n[SUCCESS] Analiza ukonczona pomyslnie!")
         print(f"Przeanalizowano {result['tweets_analyzed']} tweetów")
         print("Sprawdź pliki w folderze data/analysis/")
     else:
-        print("\n❌ Nie udało się ukończyć analizy")
+        print("\n[ERROR] Nie udalo sie ukonczyc analizy")

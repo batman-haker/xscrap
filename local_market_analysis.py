@@ -48,8 +48,16 @@ def create_local_analysis():
 
     # Load tweets
     try:
-        with open('data/raw/sample_categorized_tweets.json', 'r', encoding='utf-8') as f:
-            tweets_data = json.load(f)
+        # First try comprehensive tweets (new system)
+        comprehensive_file = 'data/raw/comprehensive_tweets_current.json'
+        if os.path.exists(comprehensive_file):
+            with open(comprehensive_file, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+                tweets_data = data.get('tweets_by_category', {})
+        else:
+            # Fallback to sample file
+            with open('data/raw/sample_categorized_tweets.json', 'r', encoding='utf-8') as f:
+                tweets_data = json.load(f)
     except Exception as e:
         print(f"Błąd ładowania danych: {e}")
         return None
